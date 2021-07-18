@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "Police_Shooting": "jupyter",
+        "*.rmd": "markdown",
+        "vector": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
+}
