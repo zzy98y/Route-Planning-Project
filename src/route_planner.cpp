@@ -67,8 +67,8 @@ bool Compare(const auto &first, const auto &second) {
 
 RouteModel::Node *RoutePlanner::NextNode() {
     std::sort(open_list.begin(),open_list.end(),Compare); 
-    RouteModel::Node* lowest_node = open_list.front();
-    open_list.erase(open_list.front());
+    RouteModel::Node* lowest_node = open_list.back();
+    open_list.erase(open_list.back());
     return lowest_node;
 }
 
