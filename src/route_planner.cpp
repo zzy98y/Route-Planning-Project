@@ -59,7 +59,7 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Remove that node from the open_list.
 // - Return the pointer.
 
-bool Compare(const RouteModel::Node *first, const RouteModel *second) {
+bool Compare(const RouteModel::Node *first, const RouteModel::Node *second) {
     auto first_sum = first->h_value + first->g_value; 
     auto second_sum = second->h_value + second->g_value; 
     return first_sum < second_sum; 
@@ -67,8 +67,9 @@ bool Compare(const RouteModel::Node *first, const RouteModel *second) {
 
 RouteModel::Node *RoutePlanner::NextNode() {
     std::sort(open_list.begin(),open_list.end(),Compare); 
-    RouteModel::Node* lowest_node = open_list.begin();
-    open_list.erase(open_list.begin());
+    auto lowest_node = open_list.back();
+    open_list.pop_back();
+    lowest_node->visited = true;
     return lowest_node;
 }
 
@@ -112,17 +113,16 @@ void RoutePlanner::AStarSearch() {
     RouteModel::Node *current_node = nullptr;
 
     // TODO: Implement your solution here.
-    start_node->visited = true; 
+    open_list = {};
     open_list.push_back(start_node);
 
-    while(!open_list.empty()) {
-        RouteModel::Node* current_node = NextNode();
-
-        if (current_node->distance(*end_node) == 0) {
-            m_Model.path = ConstructFinalPath(end_node);
-            return;
+    while(open_list.size() >0) {
+        current_node = this->NextNode();
+        if(current_node == end_node) {
+            break;
         }
-        AddNeighbors(current_node);
+        this->AddNeighbors(current_node);
     }
+    m_Model.path = ConstructFinalPath(end_node);
 
 }
